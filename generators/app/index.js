@@ -43,16 +43,10 @@ module.exports = yeoman.Base.extend({
     }.bind(this));
   },
 
-  writing: function () {
+  copingFiles: function () {
     this.fs.copyTpl(
       `${this.templatePath()}/**/!(_)*`,
       this.destinationPath(),
-      this.props
-    );
-
-    this.fs.copyTpl(
-      `${this.templatePath()}/**/_package.json*`,
-      this.destinationPath('package.json'),
       this.props
     );
   },
@@ -71,7 +65,7 @@ module.exports = yeoman.Base.extend({
     );
   },
 
-  install: function () {
+  installingPackages: function () {
     const devDependencies = [
       'gulp',
       'webpack',
@@ -84,6 +78,53 @@ module.exports = yeoman.Base.extend({
       'react-dom'
     ];
 
+    const dependenciesRedux = this.props.useRedux ? [
+      'redux',
+      'react-redux'
+    ] : [];
 
+    const dependenciesRouter = this.props.userRouter ? [
+      'react-router'
+    ].concat(this.props.useRedux ? ['react-router-redux'] : []) : [];
+
+    const dependenciesMUI = this.props.useMUI ? [
+      'material-ui',
+      'react-tap-event-plugin'
+    ] : [];
+
+
+    this.npmInstall(devDependencies, { saveDev: true });
+    this.npmInstall(dependencies
+      .concat(dependenciesRedux)
+      .concat(dependenciesRouter)
+      .concat(dependenciesMUI),
+      { save: true });
+  },
+
+  installingTypings: function () {
+    const typings = [
+      'dt~react',
+      'dt~react-dom'
+    ];
+
+    const typingsRedux = this.props.useRedux ? [
+      'dt~redux',
+      'dt~react-redux'
+    ] : [];
+
+    const typingsRouter = this.props.userRouter ? [
+      'dt~react-router'
+    ].concat(this.props.useRedux ? ['react-router-redux'] : []) : [];
+
+    const typingsMUI = this.props.useMUI ? [
+      'dt~material-ui',
+      'dt~react-tap-event-plugin'
+    ] : [];
+
+    this.spawnCommand('typings', ['install', '--save', '--global']
+      .concat(typings)
+      .concat(typingsRedux)
+      .concat(typingsRouter)
+      .concat(typingsMUI));
   }
 });
