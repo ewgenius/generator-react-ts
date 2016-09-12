@@ -49,6 +49,14 @@ module.exports = yeoman.Base.extend({
       this.destinationPath(),
       this.props
     );
+
+    if (this.props.useRedux) {
+      this.fs.copyTpl(
+        this.templatePath('src/_store.ts'),
+        this.destinationPath('src/store.ts'),
+        this.props
+      );
+    }
   },
 
   createingPackage: function () {
@@ -68,9 +76,17 @@ module.exports = yeoman.Base.extend({
   installingPackages: function () {
     const devDependencies = [
       'gulp',
+      'gulp-util',
+      'css-loader',
+      'file-loader',
+      'node-sass',
+      'sass-loader',
+      'style-loader',
+      'ts-loader',
+      'typescript',
+      'url-loader',
       'webpack',
-      'webpack-dev-server',
-      'ts-loader'
+      'webpack-dev-server'
     ];
 
     const dependencies = [
