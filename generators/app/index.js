@@ -92,7 +92,6 @@ module.exports = yeoman.Base.extend({
       'react-tap-event-plugin'
     ] : [];
 
-
     this.npmInstall(devDependencies, { saveDev: true });
     this.npmInstall(dependencies
       .concat(dependenciesRedux)
