@@ -16,6 +16,10 @@ module.exports = {
     loaders
   },
   plugins: [
+    new webpack.ProvidePlugin({
+      'Promise': 'es6-promise',
+      'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
+    }),
     new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js', Infinity),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({

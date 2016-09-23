@@ -65,10 +65,7 @@ module.exports = yeoman.Base.extend({
       {
         name: this.props.name,
         version: '1.0.0',
-        description: this.props.description,
-        scripts: {
-          'start': 'webpack-dev-server --inline'
-        }
+        description: this.props.description
       }
     );
   },
@@ -83,29 +80,43 @@ module.exports = yeoman.Base.extend({
       'sass-loader',
       'style-loader',
       'ts-loader',
-      'typescript',
+      'imports-loader',
+      'exports-loader',
+      'typescript@2',
       'url-loader',
       'webpack',
-      'webpack-dev-server'
+      'webpack-dev-server',
+      'es6-promise',
+      'whatwg-fetch'
     ];
 
     const dependencies = [
       'react',
-      'react-dom'
+      'react-dom',
+      '@types/react',
+      '@types/react-dom'
     ];
 
     const dependenciesRedux = this.props.useRedux ? [
       'redux',
-      'react-redux'
+      'react-redux',
+      '@types/redux',
+      '@types/react-redux'
     ] : [];
 
     const dependenciesRouter = this.props.userRouter ? [
-      'react-router'
-    ].concat(this.props.useRedux ? ['react-router-redux'] : []) : [];
+      'react-router',
+      '@types/react-router'
+    ].concat(this.props.useRedux ? [
+      'react-router-redux',
+      '@types/react-router-redux'
+    ] : []) : [];
 
     const dependenciesMUI = this.props.useMUI ? [
       'material-ui',
-      'react-tap-event-plugin'
+      'react-tap-event-plugin',
+      '@types/material-ui',
+      '@types/react-tap-event-plugin'
     ] : [];
 
     this.npmInstall(devDependencies, { saveDev: true });
@@ -113,33 +124,6 @@ module.exports = yeoman.Base.extend({
       .concat(dependenciesRedux)
       .concat(dependenciesRouter)
       .concat(dependenciesMUI),
-      { save: true });
-  },
-
-  installingTypings: function () {
-    const typings = [
-      'dt~react',
-      'dt~react-dom'
-    ];
-
-    const typingsRedux = this.props.useRedux ? [
-      'dt~redux',
-      'dt~react-redux'
-    ] : [];
-
-    const typingsRouter = this.props.userRouter ? [
-      'dt~react-router'
-    ].concat(this.props.useRedux ? ['react-router-redux'] : []) : [];
-
-    const typingsMUI = this.props.useMUI ? [
-      'dt~material-ui',
-      'dt~react-tap-event-plugin'
-    ] : [];
-
-    this.spawnCommand('typings', ['install', '--save', '--global']
-      .concat(typings)
-      .concat(typingsRedux)
-      .concat(typingsRouter)
-      .concat(typingsMUI));
+      { saveDev: true });
   }
 });

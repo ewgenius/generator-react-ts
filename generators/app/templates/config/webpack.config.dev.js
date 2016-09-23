@@ -15,6 +15,7 @@ module.exports = {
   module: {
     loaders
   },
+  devtool: 'source-map',
   plugins: [
     new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js', Infinity),
     new webpack.HotModuleReplacementPlugin(),
